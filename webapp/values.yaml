@@ -1,0 +1,40 @@
+replicaCount: 1
+namespaces:
+  system: system
+  app: app
+
+gateway:
+  image: "nginxdemos/hello"
+  ingress:
+    enabled: true
+    host: gateway.local
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1024Mi"
+
+authService:
+  image: "kennethreitz/httpbin"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+dataService:
+  image: "hashicorp/http-echo"
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "200m"
+      memory: "512Mi"
+  serviceAccount:
+    dataServiceSA: data-service-sa
+  

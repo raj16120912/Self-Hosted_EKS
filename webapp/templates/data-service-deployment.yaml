@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-service
+  namespace: {{ .Values.namespaces.app }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: data-service
+  template:
+    metadata:
+      labels:
+        app: data-service
+    spec:
+      containers:
+        - name: data-service
+          image: {{ .Values.dataService.image }}
+          ports:
+            - containerPort: 5678
+          resources: 
+            requests:
+              memory: {{ .Values.dataService.resources.requests.memory }}
+              cpu: {{ .Values.dataService.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.dataService.resources.limits.memory }}
+              cpu: {{ .Values.dataService.resources.limits.cpu }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5678
+            initialDelaySeconds: 60   # Increase delay before first probe
+            periodSeconds: 30         # Check every 10 seconds
+            timeoutSeconds: 15         # Increase timeout
+            failureThreshold: 15
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5678
+            initialDelaySeconds: 60   # Increase delay before first probe
+            periodSeconds: 30         # Check every 10 seconds
+            timeoutSeconds: 15         # Increase timeout
+            failureThreshold: 15
