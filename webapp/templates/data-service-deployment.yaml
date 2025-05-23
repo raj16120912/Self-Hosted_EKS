@@ -13,9 +13,22 @@ spec:
       labels:
         app: data-service
     spec:
+      serviceAccountName: data-service-sa
       containers:
         - name: data-service
           image: {{ .Values.dataService.image }}
+          args: ["-text=Hello from data-service"]
+          env:
+          - name: MINIO_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: minio-creds
+                key: MINIO_ACCESS_KEY
+          - name: MINIO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: minio-creds
+                key: MINIO_SECRET_KEY
           ports:
             - containerPort: 5678
           resources: 

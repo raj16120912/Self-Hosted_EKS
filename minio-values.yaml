@@ -1,0 +1,25 @@
+auth:
+  rootUser: minioadmin
+  rootPassword: minioadmin
+
+defaultBuckets: mybucket
+
+mode: standalone
+
+persistence:
+  enabled: false  # disable PVC for local/dev setup
+
+ingress:
+  enabled: true
+  hostname: minio.local
+  ingressClassName: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+  limits:
+    memory: 256Mi
+    cpu: 250m
