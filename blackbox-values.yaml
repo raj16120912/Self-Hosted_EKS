@@ -1,0 +1,21 @@
+service:
+  type: ClusterIP
+  port: 9115
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: monitoring  # Match the label of your kube-prometheus-stack
+config:
+  modules:
+    http_2xx:
+      prober: http
+      http:
+        method: GET
+        preferred_ip_protocol: ip4
+resources:
+  requests:
+    cpu: "50m"
+    memory: "64Mi"
+  limits:
+    cpu: "100m"
+    memory: "128Mi"

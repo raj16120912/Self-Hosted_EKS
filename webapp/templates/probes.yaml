@@ -1,0 +1,47 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: gateway-probe
+  namespace: system
+  labels:
+    release: monitoring
+spec:
+  prober:
+    url: blackbox-exporter.default.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - http://gateway.system.svc.cluster.local:80
+  module: http_2xx
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: auth-service-probe
+  namespace: app
+  labels:
+    release: monitoring
+spec:
+  prober:
+    url: blackbox-exporter.default.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - http://auth-service.app.svc.cluster.local:80
+  module: http_2xx
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: data-service-probe
+  namespace: app
+  labels:
+    release: monitoring
+spec:
+  prober:
+    url: blackbox-exporter.default.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - http://data-service.app.svc.cluster.local:80
+  module: http_2xx
